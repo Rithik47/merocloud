@@ -70,10 +70,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form auth-form-card">
           <h1 className="form-title">
             {type === "sign-in" ? "Sign In" : "Sign Up"}
           </h1>
+          <p className="auth-form-subtitle">
+            {type === "sign-in"
+              ? "Welcome back. Access your cloud workspace securely."
+              : "Create your account and start organizing your files."}
+          </p>
           {type === "sign-up" && (
             <FormField
               control={form.control}
