@@ -1,0 +1,8 @@
+<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Handle -->
+  <rect x="10" y="1.5" width="6" height="2.5" rx="1.25" fill="#F2F5F9"/>
+  <!-- Lid -->
+  <rect x="2.5" y="5" width="21" height="2.75" rx="1.375" fill="#F2F5F9"/>
+  <!-- Body -->
+  <path d="M5.5 9.5H20.5L19.15 22.8C19.06 23.61 18.38 24.25 17.56 24.25H8.44C7.62 24.25 6.94 23.61 6.85 22.8L5.5 9.5Z" fill="#F2F5F9"/>
+</svg>
