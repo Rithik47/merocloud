@@ -8,14 +8,15 @@ import { Chart } from "@/components/Chart";
 import { FormattedDateTime } from "@/components/FormattedDateTime";
 import { Thumbnail } from "@/components/Thumbnail";
 import { Separator } from "@/components/ui/separator";
-import { getFiles, getTotalSpaceUsed } from "@/lib/actions/file.actions";
+import { getFiles, getTotalSpaceUsed, getTrashedFiles } from "@/lib/actions/file.actions";
 import { convertFileSize, getUsageSummary } from "@/lib/utils";
 
 const Dashboard = async () => {
   // Parallel requests
-  const [files, totalSpace] = await Promise.all([
+  const [files, totalSpace, trashedFiles] = await Promise.all([
     getFiles({ types: [], limit: 10 }),
     getTotalSpaceUsed(),
+    getTrashedFiles(),
   ]);
 
   // Get usage summary
@@ -59,6 +60,33 @@ const Dashboard = async () => {
               </div>
             </Link>
           ))}
+
+          {/* Trash summary card */}
+          <Link href="/trash" className="dashboard-summary-card summary-card-trash">
+            <div className="space-y-4">
+              <div className="flex justify-between gap-3">
+                <div className="summary-type-icon">
+                  <Image
+                    src="/assets/icons/trash.svg"
+                    width={44}
+                    height={44}
+                    alt="Trash icon"
+                    className="summary-type-icon-image"
+                  />
+                </div>
+                <h4 className="summary-type-size">
+                  {trashedFiles?.total ?? 0}{" "}
+                  {(trashedFiles?.total ?? 0) === 1 ? "file" : "files"}
+                </h4>
+              </div>
+              <h5 className="summary-type-title">Trash</h5>
+              <Separator className="bg-light-400 dark:bg-white/10" />
+              <FormattedDateTime
+                date={trashedFiles?.documents?.[0]?.$updatedAt ?? ""}
+                className="text-center"
+              />
+            </div>
+          </Link>
         </ul>
       </section>
 

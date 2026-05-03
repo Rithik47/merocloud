@@ -2,8 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Sort from "@/components/Sort";
 import { getFiles, getTotalSpaceUsed } from "@/lib/actions/file.actions";
-import { Models } from "node-appwrite";
-import Card from "@/components/Card";
+import FileListClient from "@/components/FileListClient";
 import { convertFileSize, getFileTypesParams } from "@/lib/utils";
 
 const TYPE_CONFIG: Record<
@@ -95,11 +94,7 @@ const Page = async ({ searchParams, params }: SearchParamProps) => {
 
       {/* ── File grid ── */}
       {files.total > 0 ? (
-        <section className="file-list">
-          {files.documents.map((file: Models.Document) => (
-            <Card key={file.$id} file={file} />
-          ))}
-        </section>
+        <FileListClient files={files.documents} />
       ) : (
         <p className="empty-list">No files uploaded</p>
       )}
