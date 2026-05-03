@@ -17,12 +17,12 @@ const Sidebar = ({ fullName, avatar, email }: Props) => {
 
   return (
     <aside className="sidebar">
-      <Link href="/">
+      <Link href="/" className="ml-3 block">
         <Image
           src="/assets/icons/logo-full-brand.png"
           alt="logo"
-          width={160}
-          height={50}
+          width={190}
+          height={58}
           className="hidden h-auto max-w-full object-contain lg:block"
         />
 

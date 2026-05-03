@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,17 @@ const Search = () => {
   const router = useRouter();
   const path = usePathname();
   const [debouncedQuery] = useDebounce(query, 300);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -50,7 +61,7 @@ const Search = () => {
   };
 
   return (
-    <div className="search">
+    <div className="search" ref={wrapperRef}>
       <div className="search-input-wrapper">
         <Image
           src="/assets/icons/search.svg"
