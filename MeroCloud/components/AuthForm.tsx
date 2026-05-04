@@ -37,7 +37,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [accountId, setAccountId] = useState(null);
+  const [accountId, setAccountId] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const oauthError = searchParams.get("oauthError");
 
@@ -65,6 +65,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setErrorMessage("");
+    setAccountId(null);
 
     try {
       const user =
@@ -75,9 +76,18 @@ const AuthForm = ({ type }: { type: FormType }) => {
             })
           : await signInUser({ email: values.email });
 
+      if (type === "sign-in" && user?.error) {
+        setErrorMessage("No account found for this email. Please sign up first.");
+        return;
+      }
+
       setAccountId(user.accountId);
     } catch {
-      setErrorMessage("Failed to create account. Please try again.");
+      setErrorMessage(
+        type === "sign-in"
+          ? "We could not sign you in. Please check your email and try again."
+          : "Failed to create account. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -169,9 +179,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
             )}
           </Button>
 
-          {errorMessage && <p className="error-message">*{errorMessage}</p>}
+          {errorMessage && (
+            <div className="rounded-2xl border border-red/20 bg-red/10 px-4 py-3 text-sm text-red shadow-drop-1">
+              {errorMessage}
+            </div>
+          )}
           {oauthError && (
-            <p className="error-message">*Google sign-in failed: {oauthError}</p>
+            <div className="rounded-2xl border border-red/20 bg-red/10 px-4 py-3 text-sm text-red shadow-drop-1">
+              Google sign-in failed: {oauthError}
+            </div>
           )}
 
           {/* Divider */}
